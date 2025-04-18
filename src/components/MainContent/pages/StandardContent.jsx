@@ -9,7 +9,7 @@ export function StandardContent() {
                 marginBottom: '100px',
             }}
         >
-            <div style={{ width: '450px' }}>
+            <div style={{ width: '500px' }}>
                 <div style={{ fontSize: '30px', margin: '0px 0 30px 0' }}>Standard Content</div>
 
                 <div style={{ fontSize: '17px', marginBottom: '20px' }}>Client Information</div>
