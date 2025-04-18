@@ -9,11 +9,10 @@ export function ServiceAgreement() {
                 marginBottom: '80px',
             }}
         >
-            <div style={{ fontSize: '30px', margin: '70px 0 50px 0' }}>
-                Design-Build Services Agreement
-            </div>
-
             <div style={{ width: '500px' }}>
+                <div style={{ fontSize: '30px', margin: '70px 0 50px 0' }}>
+                    Design-Build Services Agreement
+                </div>
                 <div style={{ marginBottom: '10px' }}>Contact Number</div>
                 <Input />
                 <div style={{ marginBottom: '10px', marginTop: '20px' }}>Effective Date</div>
