@@ -1,11 +1,20 @@
 import { Checkbox, Input, Tooltip } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import {
+    sanitizeNumberInput,
+    parseNumber,
+    formatNumberWithCommas,
+    formatUSD,
+} from '../../../utils/numberUtils';
+import { useGlobalMap } from '../../../hooks/GlobalMap';
 
 const sectionWidth = 500;
 const subSectionLeftMargin = 20;
 
 function OptionalServiceItem(props) {
-    const { text } = props;
+    const { text, value, changeValue } = props;
+
     return (
         <div style={{ display: 'flex', marginBottom: '10px' }}>
             <div
@@ -23,7 +32,14 @@ function OptionalServiceItem(props) {
                         Included
                     </Checkbox>
                     <div style={{ width: '130px' }}>
-                        <Input placeholder="$1,000 - 2,000" />
+                        <Input
+                            value={value ? formatUSD(value) : null}
+                            onInput={(e) => {
+                                const cleaned = sanitizeNumberInput(e.target.value);
+                                changeValue(cleaned);
+                            }}
+                            placeholder="$1,000 - 2,000"
+                        />
                     </div>
                 </div>
             </div>
@@ -82,6 +98,10 @@ function SubSectionTitle(props) {
 }
 
 export function Additional() {
+    const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
+
+    console.log(JSON.stringify(globalContractMap, null, 2));
+
     return (
         <div
             style={{
@@ -109,7 +129,25 @@ export function Additional() {
                             width: `${sectionWidth + subSectionLeftMargin}px`,
                         }}
                     >
-                        <OptionalServiceItem text={'Arborist Report'} />
+                        <OptionalServiceItem
+                            value={
+                                globalContractMap.additionalCostAndServices.site.treeRemoval
+                                    .arboristReport.price
+                            }
+                            changeValue={(value) =>
+                                setGlobalContractMapValue(
+                                    [
+                                        'additionalCostAndServices',
+                                        'site',
+                                        'treeRemoval',
+                                        'arboristReport',
+                                        'price',
+                                    ],
+                                    value
+                                )
+                            }
+                            text={'Arborist Report'}
+                        />
                         <OptionalServiceItem text={'Tree Removal Plan Check'} />
                         <OptionalServiceItem text={'Tree Removal Permit'} />
                         <OptionalServiceItem text={'Physical Tree Removal'} />

@@ -1,5 +1,9 @@
-import { Input } from 'antd';
+import { Input, DatePicker } from 'antd';
+import { useGlobalMap } from '../../hooks/GlobalMap';
 export function ServiceAgreement() {
+    const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
+    console.log(globalContractMap.main);
+    const contractMapBasePath = ['main'];
     return (
         <div
             style={{
@@ -14,9 +18,24 @@ export function ServiceAgreement() {
                     Design-Build Services Agreement
                 </div>
                 <div style={{ marginBottom: '10px' }}>Contact Number</div>
-                <Input />
+                <Input
+                    onChange={(e) =>
+                        setGlobalContractMapValue(
+                            [...contractMapBasePath, 'contactNumber'],
+                            e.target.value
+                        )
+                    }
+                />
                 <div style={{ marginBottom: '10px', marginTop: '20px' }}>Effective Date</div>
-                <Input />
+                <DatePicker
+                    style={{ width: '500px' }}
+                    onChange={(date, dateString) =>
+                        setGlobalContractMapValue(
+                            [...contractMapBasePath, 'effectiveDate'],
+                            dateString
+                        )
+                    }
+                />
             </div>
         </div>
     );

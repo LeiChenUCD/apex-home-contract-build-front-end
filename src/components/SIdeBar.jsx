@@ -1,10 +1,12 @@
 import { CustomizedButton } from './CustomizedButton';
-import { useView } from '../GlobalContext';
+import { useView } from '../hooks/GlobalMap';
 import { useEffect } from 'react';
 import ApexHomes from '../assets/ApexHomes.png';
 import Input from 'antd/es/input/Input';
+import { useGlobalMap } from '../hooks/GlobalMap';
 export function SideBar() {
     const { view, changeView } = useView();
+    const { globalMap, setGlobalMapValue } = useGlobalMap();
 
     const buttonWidth = '250px';
     return (
@@ -46,21 +48,20 @@ export function SideBar() {
 
                         <CustomizedButton
                             width={buttonWidth}
-                            text={'Optional Upgrades'}
-                            callback={() => changeView('Optional Upgrades')}
-                            backgroundColor={
-                                view.toLowerCase() === 'optional upgrades'
-                                    ? '#AFFFBB'
-                                    : 'RGB(234, 234, 234)'
-                            }
-                        />
-
-                        <CustomizedButton
-                            width={buttonWidth}
                             text={'Additional Cost & Services'}
                             callback={() => changeView('Additional Cost & Services')}
                             backgroundColor={
                                 view.toLowerCase() === 'additional cost & services'
+                                    ? '#AFFFBB'
+                                    : 'RGB(234, 234, 234)'
+                            }
+                        />
+                        <CustomizedButton
+                            width={buttonWidth}
+                            text={'Optional Upgrades'}
+                            callback={() => changeView('Optional Upgrades')}
+                            backgroundColor={
+                                view.toLowerCase() === 'optional upgrades'
                                     ? '#AFFFBB'
                                     : 'RGB(234, 234, 234)'
                             }
