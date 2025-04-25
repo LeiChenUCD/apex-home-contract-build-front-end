@@ -13,7 +13,8 @@ const sectionWidth = 500;
 const subSectionLeftMargin = 20;
 
 function OptionalServiceItem(props) {
-    const { text, value, changeValue } = props;
+    const { setGlobalContractMapValue } = useGlobalMap();
+    const { text, subMap, basePath } = props;
 
     return (
         <div style={{ display: 'flex', marginBottom: '10px' }}>
@@ -28,15 +29,20 @@ function OptionalServiceItem(props) {
                 <div style={{ fontSize: '14px' }}>{text}</div>
 
                 <div style={{ display: 'flex' }}>
-                    <Checkbox style={{ alignItems: 'center', marginRight: '20px' }}>
+                    <Checkbox
+                        onChange={(e) =>
+                            setGlobalContractMapValue([...basePath, 'included'], e.target.checked)
+                        }
+                        style={{ alignItems: 'center', marginRight: '20px' }}
+                    >
                         Included
                     </Checkbox>
                     <div style={{ width: '130px' }}>
                         <Input
-                            value={value ? formatUSD(value) : null}
+                            value={subMap?.price ? formatUSD(subMap.price) : null}
                             onInput={(e) => {
                                 const cleaned = sanitizeNumberInput(e.target.value);
-                                changeValue(cleaned);
+                                setGlobalContractMapValue([...basePath, 'price'], cleaned);
                             }}
                             placeholder="$1,000 - 2,000"
                         />
@@ -97,10 +103,330 @@ function SubSectionTitle(props) {
     return <div style={{ marginBottom: '10px' }}>{text}</div>;
 }
 
+// ------------------Site-----------------
+
+function TreeRemoval(props) {
+    const { treeRemoval, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Tree Removal'} />
+
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={treeRemoval.arboristReport}
+                        basePath={[...basePath, 'arboristReport']}
+                        text={'Arborist Report'}
+                    />
+                    <OptionalServiceItem
+                        subMap={treeRemoval.treeRemovalPlanCheck}
+                        basePath={[...basePath, 'treeRemovalPlanCheck']}
+                        text={'Tree Removal Plan Check'}
+                    />
+                    <OptionalServiceItem
+                        subMap={treeRemoval.treeRemovalPermit}
+                        basePath={[...basePath, 'treeRemovalPermit']}
+                        text={'Tree Removal Permit'}
+                    />
+                    <OptionalServiceItem
+                        subMap={treeRemoval.physicalTreeRemoval}
+                        basePath={[...basePath, 'physicalTreeRemoval']}
+                        text={'Physical Tree Removal'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function Demolition(props) {
+    const { demolition, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Demolition'} />
+
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={demolition.demoPermit}
+                        basePath={[...basePath, 'demoPermit']}
+                        text={'Demo Permit'}
+                    />
+                    <OptionalServiceItem
+                        subMap={demolition.demolitionWork}
+                        basePath={[...basePath, 'demolitionWork']}
+                        text={'Demolition work'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function Survey(props) {
+    const { survey, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Survey'} />
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={survey.landSurvey}
+                        basePath={[...basePath, 'landSurvey']}
+                        text={'Land survey (recommend)'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function Site(props) {
+    const { site, basePath } = props;
+    return (
+        <>
+            <SectionTitle text={'site'} />
+
+            <TreeRemoval treeRemoval={site.treeRemoval} basePath={[...basePath, 'treeRemoval']} />
+
+            <Demolition demolition={site.demolition} basePath={[...basePath, 'demolition']} />
+
+            <Survey survey={site.survey} basePath={[...basePath, 'survey']} />
+        </>
+    );
+}
+
+// ------------------Structure-----------------
+
+function BuildingSafety(props) {
+    const { buildingSafety, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Building safety (recommend)'} />
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={buildingSafety.soilReport}
+                        basePath={[...basePath, 'soilReport']}
+                        text={'Soil Report'}
+                    />
+                    <OptionalServiceItem
+                        subMap={buildingSafety.structuralDesign}
+                        basePath={[...basePath, 'structuralDesign']}
+                        text={'Structural design'}
+                    />
+                    <OptionalServiceItem
+                        subMap={buildingSafety.foundationUpgradeWork}
+                        basePath={[...basePath, 'foundationUpgradeWork']}
+                        text={'Foundation upgrade work'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function Structure(props) {
+    const { structure, basePath } = props;
+    return (
+        <>
+            <SectionTitle text={'Structure'} />
+            <BuildingSafety
+                buildingSafety={structure.buildingSafety}
+                basePath={[...basePath, 'buildingSafety']}
+            />
+        </>
+    );
+}
+
+// ------------------MEP-----------------
+
+function FireSprinkler(props) {
+    const { fireSprinkler, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Fire Sprinkler'} />
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={fireSprinkler.firePermit}
+                        basePath={[...basePath, 'firePermit']}
+                        text={'Fire permit'}
+                    />
+                    <OptionalServiceItem
+                        subMap={fireSprinkler.fireSprinklerDesign}
+                        basePath={[...basePath, 'fireSprinklerDesign']}
+                        text={'Fire sprinkler design'}
+                    />
+                    <OptionalServiceItem
+                        subMap={fireSprinkler.fireSprinklerConstruction}
+                        basePath={[...basePath, 'fireSprinklerConstruction']}
+                        text={'Fire sprinkler construction'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function ElectricalPanelUpgrade(props) {
+    const { electricalPanelUpgrade, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Electrical Panel Upgrade'} />
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={electricalPanelUpgrade.upgradePermit}
+                        basePath={[...basePath, 'upgradePermit']}
+                        text={'Upgrade permit'}
+                    />
+                    <OptionalServiceItem
+                        subMap={electricalPanelUpgrade.panelUpgradeWork}
+                        basePath={[...basePath, 'panelUpgradeWork']}
+                        text={'Panel upgrade work'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function Utility(props) {
+    const { utility, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Utility'} />
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={utility.sewerLine}
+                        basePath={[...basePath, 'sewerLine']}
+                        text={'Sewer line'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function MEP(props) {
+    const { MEP, basePath } = props;
+    return (
+        <>
+            <SectionTitle text={'MEP'} />
+            <FireSprinkler
+                fireSprinkler={MEP.fireSprinkler}
+                basePath={[...basePath, 'fireSprinkler']}
+            />
+
+            <ElectricalPanelUpgrade
+                electricalPanelUpgrade={MEP.electricalPanelUpgrade}
+                basePath={[...basePath, 'electricalPanelUpgrade']}
+            />
+
+            <Utility utility={MEP.utility} basePath={[...basePath, 'utility']} />
+        </>
+    );
+}
+
+// ------------------Others-----------------
+
+function ImpactFee(props) {
+    const { impactFee, basePath } = props;
+    return (
+        <>
+            <SubSectionTitle text={'Impact fee'} />
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingLeft: `${subSectionLeftMargin}px`,
+                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                    }}
+                >
+                    <OptionalServiceItem
+                        subMap={impactFee.schoolFee}
+                        basePath={[...basePath, 'schoolFee']}
+                        text={'School fee'}
+                    />
+                    <OptionalServiceItem
+                        subMap={impactFee.parklandFee}
+                        basePath={[...basePath, 'parklandFee']}
+                        text={'Parkland fee'}
+                    />
+                </div>
+            </div>
+        </>
+    );
+}
+
+function Others(props) {
+    const { others, basePath } = props;
+    console.log(others);
+    return (
+        <>
+            <SectionTitle text={'Others'} />
+            <ImpactFee impactFee={others.impactFee} basePath={[...basePath, 'impactFee']} />
+        </>
+    );
+}
+
 export function Additional() {
     const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
 
-    console.log(JSON.stringify(globalContractMap, null, 2));
+    const additional = globalContractMap.additionalCostAndServices;
+    const contractMapBasePath = ['additionalCostAndServices'];
 
     return (
         <div
@@ -116,152 +442,16 @@ export function Additional() {
                     Additional Cost & Services
                 </div>
 
-                <SectionTitle text={'site'} />
+                <Site site={additional.site} basePath={[...contractMapBasePath, 'site']} />
 
-                <SubSectionTitle text={'Tree Removal'} />
+                <Structure
+                    structure={additional.structure}
+                    basePath={[...contractMapBasePath, 'structure']}
+                />
 
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem
-                            value={
-                                globalContractMap.additionalCostAndServices.site.treeRemoval
-                                    .arboristReport.price
-                            }
-                            changeValue={(value) =>
-                                setGlobalContractMapValue(
-                                    [
-                                        'additionalCostAndServices',
-                                        'site',
-                                        'treeRemoval',
-                                        'arboristReport',
-                                        'price',
-                                    ],
-                                    value
-                                )
-                            }
-                            text={'Arborist Report'}
-                        />
-                        <OptionalServiceItem text={'Tree Removal Plan Check'} />
-                        <OptionalServiceItem text={'Tree Removal Permit'} />
-                        <OptionalServiceItem text={'Physical Tree Removal'} />
-                    </div>
-                </div>
+                <MEP MEP={additional.MEP} basePath={[...contractMapBasePath, 'MEP']} />
 
-                <SubSectionTitle text={'Demolition'} />
-
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'Demo Permit'} />
-                        <OptionalServiceItem text={'Demolition work'} />
-                    </div>
-                </div>
-
-                <SubSectionTitle text={'Survey'} />
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'Land survey (recommend)'} />
-                    </div>
-                </div>
-
-                <SectionTitle text={'Structure'} />
-                <SubSectionTitle text={'Building safety (recommend)'} />
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'Soil Report'} />
-                        <OptionalServiceItem text={'Structural design'} />
-                        <OptionalServiceItem text={'Foundation upgrade work'} />
-                    </div>
-                </div>
-
-                <SectionTitle text={'MEP'} />
-                <SubSectionTitle text={'Fire Sprinkler'} />
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'Fire permit'} />
-                        <OptionalServiceItem text={'Fire sprinkler design'} />
-                        <OptionalServiceItem text={'Fire sprinkler construction'} />
-                    </div>
-                </div>
-
-                <SubSectionTitle text={'Electrical Panel Upgrade'} />
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'Upgrade permit'} />
-                        <OptionalServiceItem text={'Panel upgrade work'} />
-                    </div>
-                </div>
-
-                <SubSectionTitle text={'Utility'} />
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'Sewer line'} />
-                    </div>
-                </div>
-
-                <SectionTitle text={'Others'} />
-                <SubSectionTitle text={'Impact fee'} />
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            paddingLeft: `${subSectionLeftMargin}px`,
-                            width: `${sectionWidth + subSectionLeftMargin}px`,
-                        }}
-                    >
-                        <OptionalServiceItem text={'School fee'} />
-                        <OptionalServiceItem text={'Parkland fee'} />
-                    </div>
-                </div>
+                <Others others={additional.others} basePath={[...contractMapBasePath, 'others']} />
 
                 <div
                     style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}
