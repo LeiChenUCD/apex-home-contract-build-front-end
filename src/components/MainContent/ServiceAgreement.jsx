@@ -2,7 +2,6 @@ import { Input, DatePicker } from 'antd';
 import { useGlobalMap } from '../../hooks/GlobalMap';
 export function ServiceAgreement() {
     const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
-    console.log(globalContractMap.main);
     const contractMapBasePath = ['main'];
     return (
         <div

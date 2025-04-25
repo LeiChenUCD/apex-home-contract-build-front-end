@@ -18,7 +18,6 @@ export const initContractMap = {
             projectLocation: '',
             projectName: '',
             ADUModelType: '',
-            totalPriceForADU: '',
         },
     },
     additionalCostAndServices: {
