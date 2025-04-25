@@ -8,7 +8,18 @@ export const useView = () => {
 };
 // Custom hook for globalMap
 export const useGlobalMap = () => {
-    const { globalContractMap, setGlobalContractMap, setGlobalContractMapValue } =
-        useContext(GlobalContext);
-    return { globalContractMap, setGlobalContractMap, setGlobalContractMapValue };
+    const {
+        globalContractMap,
+        setGlobalContractMap,
+        setGlobalContractMapValue,
+        pushGlobalContractMapValue,
+        removeGlobalContractMapItem,
+    } = useContext(GlobalContext);
+    return {
+        globalContractMap,
+        setGlobalContractMap,
+        setGlobalContractMapValue,
+        pushGlobalContractMapValue,
+        removeGlobalContractMapItem,
+    };
 };

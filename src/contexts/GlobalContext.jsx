@@ -27,6 +27,52 @@ export const GlobalContextProvider = ({ children }) => {
         });
     };
 
+    const pushGlobalContractMapValue = (path, item) => {
+        setGlobalContractMap((prev) => {
+            const newMap = structuredClone(prev);
+            let curr = newMap;
+
+            for (let i = 0; i < path.length - 1; i++) {
+                const key = path[i];
+                if (!curr[key] || typeof curr[key] !== 'object') {
+                    return prev; // do nothing on invalid path
+                }
+                curr = curr[key];
+            }
+
+            const listKey = path[path.length - 1];
+            if (!Array.isArray(curr[listKey])) {
+                return prev; // not a list
+            }
+
+            curr[listKey].push(item);
+            return newMap;
+        });
+    };
+
+    const removeGlobalContractMapItem = (path, valueToRemove) => {
+        setGlobalContractMap((prev) => {
+            const newMap = structuredClone(prev);
+            let curr = newMap;
+
+            for (let i = 0; i < path.length - 1; i++) {
+                const key = path[i];
+                if (!curr[key] || typeof curr[key] !== 'object') {
+                    return prev;
+                }
+                curr = curr[key];
+            }
+
+            const listKey = path[path.length - 1];
+            if (!Array.isArray(curr[listKey])) {
+                return prev;
+            }
+
+            curr[listKey] = curr[listKey].filter((item) => item !== valueToRemove);
+            return newMap;
+        });
+    };
+
     return (
         <GlobalContext.Provider
             value={{
@@ -35,6 +81,8 @@ export const GlobalContextProvider = ({ children }) => {
                 globalContractMap,
                 setGlobalContractMap,
                 setGlobalContractMapValue,
+                pushGlobalContractMapValue,
+                removeGlobalContractMapItem,
             }}
         >
             {children}

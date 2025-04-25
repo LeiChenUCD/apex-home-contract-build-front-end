@@ -130,7 +130,7 @@ export const initContractMap = {
             countertops: 'None',
             cabinet: 'None',
             lightFixtures: 'None',
-            Equipments: [],
+            equipments: [],
         },
         bathroom: {
             equipments: [],

@@ -69,7 +69,6 @@ function Salesperson(props) {
 function ProjectInformation(props) {
     const { setGlobalContractMapValue } = useGlobalMap();
     const { projectInformation, basePath } = props;
-    // console.log(projectInformation);
     return (
         <>
             <div style={{ fontSize: '17px', marginBottom: '20px', marginTop: '40px' }}>
