@@ -413,7 +413,6 @@ function ImpactFee(props) {
 
 function Others(props) {
     const { others, basePath } = props;
-    console.log(others);
     return (
         <>
             <SectionTitle text={'Others'} />
