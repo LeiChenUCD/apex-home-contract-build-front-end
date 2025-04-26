@@ -4,9 +4,47 @@ import { useEffect } from 'react';
 import ApexHomes from '../assets/ApexHomes.png';
 import Input from 'antd/es/input/Input';
 import { useGlobalMap } from '../hooks/GlobalMap';
+import { fileApi } from '../api/files';
 export function SideBar() {
     const { view, changeView } = useView();
-    const { globalMap, setGlobalMapValue } = useGlobalMap();
+    const { globalContractMap, setGlobalMapValue } = useGlobalMap();
+
+    // console.log('globalMap', globalContractMap);
+
+    function viewFile() {
+        fetch(fileApi.file.getTemplate, {
+            method: 'POST', // Use POST to send data
+            headers: {
+                'Content-Type': 'application/json', // Specify JSON content type
+            },
+            body: JSON.stringify(globalContractMap), // Convert the payload to a JSON string
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch PDF');
+                }
+                return response.blob(); // Convert the response to a Blob
+            })
+            .then((blob) => {
+                // Create a temporary URL for the Blob
+                const url = URL.createObjectURL(blob);
+
+                // Open the PDF in a new tab
+                const newTab = window.open(url, '_blank');
+
+                if (newTab) {
+                    newTab.focus(); // Focus on the new tab
+                } else {
+                    alert('Please allow popups for this site');
+                }
+
+                // Optionally, revoke the URL after usage to release memory
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            })
+            .catch((error) => {
+                console.error('Error fetching PDF:', error);
+            });
+    }
 
     const buttonWidth = '250px';
     return (
@@ -92,7 +130,7 @@ export function SideBar() {
                         <CustomizedButton
                             width={buttonWidth}
                             text={'Export'}
-                            callback={() => changeView('Additional Cost & Services')}
+                            callback={() => viewFile()}
                             backgroundColor={'#AFFFBB'}
                         />
                     </div>

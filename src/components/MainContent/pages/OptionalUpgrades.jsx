@@ -431,7 +431,6 @@ function Bathroom(props) {
     const { bathroom, basePath } = props;
     const { pushGlobalContractMapValue, removeGlobalContractMapItem } = useGlobalMap();
 
-    console.log(JSON.stringify(bathroom, null, 2));
     return (
         <>
             <div
