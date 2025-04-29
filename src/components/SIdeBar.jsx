@@ -5,6 +5,7 @@ import ApexHomes from '../assets/ApexHomes.png';
 import Input from 'antd/es/input/Input';
 import { useGlobalMap } from '../hooks/GlobalMap';
 import { fileApi } from '../api/files';
+
 export function SideBar() {
     const { view, changeView } = useView();
     const { globalContractMap, setGlobalMapValue } = useGlobalMap();
@@ -43,6 +44,30 @@ export function SideBar() {
             })
             .catch((error) => {
                 console.error('Error fetching PDF:', error);
+            });
+    }
+
+    function downloadPDF() {
+        fetch(fileApi.file.getTemplate, {
+            method: 'POST', // Use POST to send data
+            headers: {
+                'Content-Type': 'application/json', // Specify JSON content type
+            },
+            body: JSON.stringify(globalContractMap), // Convert the payload to a JSON string
+        })
+            .then((res) => res.blob())
+            .then((blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'draft.pdf'; // sets download filename
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((err) => {
+                alert('Download failed: ' + err.message);
             });
     }
 
@@ -131,6 +156,13 @@ export function SideBar() {
                             width={buttonWidth}
                             text={'Export'}
                             callback={() => viewFile()}
+                            backgroundColor={'#AFFFBB'}
+                        />
+
+                        <CustomizedButton
+                            width={buttonWidth}
+                            text={'Download'}
+                            callback={() => downloadPDF()}
                             backgroundColor={'#AFFFBB'}
                         />
                     </div>
