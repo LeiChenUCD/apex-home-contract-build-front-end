@@ -10,7 +10,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: process.env.FAST_API_ENDPOINT, // your FastAPI backend
+                target: process.env.VITE_API_ENDPOINT, // your FastAPI backend
                 changeOrigin: true,
                 secure: false,
             },

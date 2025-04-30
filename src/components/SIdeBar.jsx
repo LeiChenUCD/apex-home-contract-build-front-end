@@ -6,14 +6,66 @@ import Input from 'antd/es/input/Input';
 import { useGlobalMap } from '../hooks/GlobalMap';
 import { fileApi } from '../api/files';
 
-export function SideBar() {
+const buttonWidth = '250px';
+
+export function TopBar() {
     const { view, changeView } = useView();
+    return (
+        <>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <div>
+                    <img
+                        src={ApexHomes}
+                        style={{ width: '150px', marginTop: '20px', marginLeft: '25px' }}
+                    ></img>
+                </div>
+                {/* tab switch buttons */}
+                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '10px' }}>
+                    <CustomizedButton
+                        width={buttonWidth}
+                        text={'Standard Content'}
+                        callback={() => changeView('Standard Content')}
+                        backgroundColor={
+                            view.toLowerCase() === 'standard content'
+                                ? '#AFFFBB'
+                                : 'RGB(234, 234, 234)'
+                        }
+                    />
+
+                    <CustomizedButton
+                        width={buttonWidth}
+                        text={'Additional Cost & Services'}
+                        callback={() => changeView('Additional Cost & Services')}
+                        backgroundColor={
+                            view.toLowerCase() === 'additional cost & services'
+                                ? '#AFFFBB'
+                                : 'RGB(234, 234, 234)'
+                        }
+                    />
+                    <CustomizedButton
+                        width={buttonWidth}
+                        text={'Optional Upgrades'}
+                        callback={() => changeView('Optional Upgrades')}
+                        backgroundColor={
+                            view.toLowerCase() === 'optional upgrades'
+                                ? '#AFFFBB'
+                                : 'RGB(234, 234, 234)'
+                        }
+                    />
+                </div>
+                <div style={{ width: '175px' }}></div>
+            </div>
+        </>
+    );
+}
+
+export function SideBar() {
     const { globalContractMap, setGlobalMapValue } = useGlobalMap();
 
     // console.log('globalMap', globalContractMap);
 
     function viewFile() {
-        fetch(fileApi.file.getTemplate, {
+        fetch(`${import.meta.env.VITE_API_ENDPOINT}${fileApi.file.getTemplate}`, {
             method: 'POST', // Use POST to send data
             headers: {
                 'Content-Type': 'application/json', // Specify JSON content type
@@ -48,7 +100,7 @@ export function SideBar() {
     }
 
     function downloadPDF() {
-        fetch(fileApi.file.getTemplate, {
+        fetch(`${import.meta.env.VITE_API_ENDPOINT}${fileApi.file.getTemplate}`, {
             method: 'POST', // Use POST to send data
             headers: {
                 'Content-Type': 'application/json', // Specify JSON content type
@@ -71,7 +123,6 @@ export function SideBar() {
             });
     }
 
-    const buttonWidth = '250px';
     return (
         <div
             style={{
@@ -81,12 +132,6 @@ export function SideBar() {
                 flexDirection: 'column',
             }}
         >
-            <div>
-                <img
-                    src={ApexHomes}
-                    style={{ width: '150px', marginTop: '40px', marginLeft: '55px' }}
-                ></img>
-            </div>
             <div style={{ height: '100%', alignContent: 'center' }}>
                 <div
                     style={{
@@ -96,75 +141,64 @@ export function SideBar() {
                         flexDirection: 'column',
                     }}
                 >
-                    {/* tab switch buttons */}
-                    <div>
-                        <CustomizedButton
-                            width={buttonWidth}
-                            text={'Standard Content'}
-                            callback={() => changeView('Standard Content')}
-                            backgroundColor={
-                                view.toLowerCase() === 'standard content'
-                                    ? '#AFFFBB'
-                                    : 'RGB(234, 234, 234)'
-                            }
-                        />
-
-                        <CustomizedButton
-                            width={buttonWidth}
-                            text={'Additional Cost & Services'}
-                            callback={() => changeView('Additional Cost & Services')}
-                            backgroundColor={
-                                view.toLowerCase() === 'additional cost & services'
-                                    ? '#AFFFBB'
-                                    : 'RGB(234, 234, 234)'
-                            }
-                        />
-                        <CustomizedButton
-                            width={buttonWidth}
-                            text={'Optional Upgrades'}
-                            callback={() => changeView('Optional Upgrades')}
-                            backgroundColor={
-                                view.toLowerCase() === 'optional upgrades'
-                                    ? '#AFFFBB'
-                                    : 'RGB(234, 234, 234)'
-                            }
-                        />
-                    </div>
-
                     {/* total cost & export */}
                     <div
                         style={{
                             display: 'flex',
                             width: '100%',
                             alignItems: 'center',
-                            flexDirection: 'column',
-                            marginTop: '30px',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            whiteSpace: 'nowrap',
                         }}
                     >
                         <div
                             style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
-                                width: '250px',
-                                marginBottom: '10px',
                             }}
                         >
-                            <div style={{ fontSize: '16px' }}>Total Cost</div>
+                            <div style={{ fontSize: '16px', marginRight: '10px' }}>Total Cost</div>
                             <Input placeholder="$150,000" style={{ width: '150px' }} />
                         </div>
-                        <CustomizedButton
-                            width={buttonWidth}
-                            text={'Export'}
-                            callback={() => viewFile()}
-                            backgroundColor={'#AFFFBB'}
-                        />
 
-                        <CustomizedButton
-                            width={buttonWidth}
-                            text={'Download'}
-                            callback={() => downloadPDF()}
-                            backgroundColor={'#AFFFBB'}
-                        />
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <div style={{ fontSize: '16px', marginRight: '10px' }}>Discount</div>
+                            <Input placeholder="$150,000" style={{ width: '150px' }} />
+                        </div>
+
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <div style={{ fontSize: '16px', marginRight: '10px' }}>
+                                Price After Discount
+                            </div>
+                            <Input placeholder="$150,000" style={{ width: '150px' }} />
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            <CustomizedButton
+                                width={buttonWidth.replace('px', '') / 2 + 'px'}
+                                text={'Preview'}
+                                callback={() => viewFile()}
+                                backgroundColor={'#AFFFBB'}
+                            />
+
+                            <CustomizedButton
+                                width={buttonWidth.replace('px', '') / 2 + 'px'}
+                                text={'Download'}
+                                callback={() => downloadPDF()}
+                                backgroundColor={'#AFFFBB'}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

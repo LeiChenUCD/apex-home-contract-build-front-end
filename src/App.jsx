@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg';
 import './App.css';
 import { SideBar } from './components/SIdeBar';
 import { MainContent } from './components/MainContent/MainContent';
+import { TopBar } from './components/SIdeBar';
 
 function App() {
     return (
@@ -23,22 +24,23 @@ function App() {
                     // borderRight: '1px solid black',
                     height: 'calc(100vh - 10px)',
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                 }}
             >
-                <div style={{ width: '33.3%', height: '100%' }}>
-                    <SideBar />
+                <div style={{}}>
+                    <TopBar />
                 </div>
-
                 <div
                     style={{
-                        width: '66.6%',
-                        maxHeight: 'calc(100vh - 10px)',
+                        // maxHeight: 'calc(100vh - 10px)',
                         overflowY: 'auto',
                         scrollbarWidth: 'none',
                     }}
                 >
                     <MainContent />
+                </div>
+                <div style={{}}>
+                    <SideBar />
                 </div>
             </div>
         </div>

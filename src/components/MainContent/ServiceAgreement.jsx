@@ -13,7 +13,7 @@ export function ServiceAgreement() {
             }}
         >
             <div style={{ width: '500px' }}>
-                <div style={{ fontSize: '30px', margin: '70px 0 50px 0' }}>
+                <div style={{ fontSize: '30px', margin: '0px 0 50px 0' }}>
                     Design-Build Services Agreement
                 </div>
                 <div style={{ marginBottom: '10px' }}>Contact Number</div>

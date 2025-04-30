@@ -95,10 +95,9 @@ function ProjectInformation(props) {
                 style={{ width: 500 }}
                 onChange={(e) => setGlobalContractMapValue([...basePath, 'ADUModelType'], e)}
                 options={[
-                    { value: 'jack', label: 'Jack' },
-                    { value: 'lucy', label: 'Lucy' },
-                    { value: 'Yiminghe', label: 'yiminghe' },
-                    { value: 'disabled', label: 'Disabled', disabled: true },
+                    { value: 'a', label: 'A' },
+                    { value: 'b', label: 'B' },
+                    { value: 'c', label: 'C' },
                 ]}
             />
         </>
@@ -139,20 +138,6 @@ export function StandardContent() {
                     style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px' }}
                 >
                     <div style={{ fontSize: '20px' }}>Total Price for ADU</div>
-                    <Input placeholder="$150,000" style={{ width: '200px' }} />
-                </div>
-
-                <div
-                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}
-                >
-                    <div style={{ fontSize: '20px' }}>Discount</div>
-                    <Input placeholder="$150,000" style={{ width: '200px' }} />
-                </div>
-
-                <div
-                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}
-                >
-                    <div style={{ fontSize: '20px' }}>Price After Discount</div>
                     <Input placeholder="$150,000" style={{ width: '200px' }} />
                 </div>
             </div>
