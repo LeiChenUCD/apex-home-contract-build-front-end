@@ -115,7 +115,7 @@ export function StandardContent() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                marginBottom: '100px',
+                // marginBottom: '100px',
             }}
         >
             <div style={{ width: '500px' }}>
