@@ -59,7 +59,7 @@ export function TopBar() {
     );
 }
 
-export function SideBar() {
+export function BottomBar() {
     const { globalContractMap, setGlobalMapValue } = useGlobalMap();
 
     // console.log('globalMap', globalContractMap);

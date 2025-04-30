@@ -2,9 +2,9 @@ import { useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import { SideBar } from './components/SIdeBar';
+import { BottomBar } from './components/SideBar';
 import { MainContent } from './components/MainContent/MainContent';
-import { TopBar } from './components/SIdeBar';
+import { TopBar } from './components/SideBar';
 
 function App() {
     return (
@@ -40,7 +40,7 @@ function App() {
                     <MainContent />
                 </div>
                 <div style={{}}>
-                    <SideBar />
+                    <BottomBar />
                 </div>
             </div>
         </div>
