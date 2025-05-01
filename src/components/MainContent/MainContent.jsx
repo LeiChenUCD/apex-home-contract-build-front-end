@@ -3,8 +3,10 @@ import { StandardContent } from './pages/StandardContent';
 import { OptionalUpgrades } from './pages/OptionalUpgrades';
 import { Additional } from './pages/Additional';
 import { useView } from '../../hooks/GlobalMap';
+import { useEffect, useRef } from 'react';
 export function MainContent() {
     const { view } = useView();
+
     return (
         <div
             style={
