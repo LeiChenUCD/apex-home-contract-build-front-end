@@ -5,8 +5,10 @@ import './App.css';
 import { BottomBar } from './components/SideBar';
 import { MainContent } from './components/MainContent/MainContent';
 import { TopBar } from './components/SideBar';
+import { useIsPhoneSize } from './hooks/useIsPhoneSize';
 
 function App() {
+    const isPhone = useIsPhoneSize();
     return (
         <div
             style={{
@@ -14,6 +16,7 @@ function App() {
                 display: 'flex',
                 justifyContent: 'center',
                 overflow: 'hidden',
+                height: !isPhone ? 'calc(100vh - 10px)' : window.innerHeight - 10,
             }}
         >
             <div
@@ -22,7 +25,7 @@ function App() {
                     // border: '1px solid black',
                     // borderLeft: '1px solid black',
                     // borderRight: '1px solid black',
-                    height: 'calc(100vh - 10px)',
+                    height: !isPhone ? 'calc(100vh - 10px)' : window.innerHeight - 10,
                     display: 'flex',
                     flexDirection: 'column',
                 }}

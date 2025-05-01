@@ -1,11 +1,12 @@
 import { CustomizedButton } from './CustomizedButton';
 import { useView } from '../hooks/GlobalMap';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ApexHomes from '../assets/ApexHomes.png';
 import Input from 'antd/es/input/Input';
 import { useGlobalMap } from '../hooks/GlobalMap';
 import { fileApi } from '../api/files';
 import { useIsPhoneSize } from '../hooks/useIsPhoneSize';
+import { isIOS } from 'react-device-detect';
 
 const buttonWidth = '250px';
 
@@ -129,66 +130,59 @@ export function TopBar() {
 export function BottomBar() {
     const { globalContractMap, setGlobalMapValue } = useGlobalMap();
     const isPhone = useIsPhoneSize();
+    const [url, setUrl] = useState('');
+    const [text, setText] = useState(import.meta.env.VITE_API_ENDPOINT);
 
     // console.log('globalMap', globalContractMap);
 
-    function viewFile() {
-        fetch(`${import.meta.env.VITE_API_ENDPOINT}${fileApi.file.getTemplate}`, {
-            method: 'POST', // Use POST to send data
-            headers: {
-                'Content-Type': 'application/json', // Specify JSON content type
-            },
-            body: JSON.stringify(globalContractMap), // Convert the payload to a JSON string
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch PDF');
+    async function fetchPDFBlob() {
+        setText('fetchPDFBlob called');
+
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_ENDPOINT}${fileApi.file.getTemplate}`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(globalContractMap),
                 }
-                return response.blob(); // Convert the response to a Blob
-            })
-            .then((blob) => {
-                // Create a temporary URL for the Blob
-                const url = URL.createObjectURL(blob);
+            );
 
-                // Open the PDF in a new tab
-                const newTab = window.open(url, '_blank');
+            setText(`Status: ${response.status}`);
+            console.log('Status:', response.status);
 
-                if (newTab) {
-                    newTab.focus(); // Focus on the new tab
-                } else {
-                    alert('Please allow popups for this site');
-                }
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Response error text:', errorText);
+                throw new Error(`Fetch failed: ${response.status} - ${errorText}`);
+            }
 
-                // Optionally, revoke the URL after usage to release memory
-                setTimeout(() => URL.revokeObjectURL(url), 1000);
-            })
-            .catch((error) => {
-                console.error('Error fetching PDF:', error);
-            });
+            return await response.blob();
+        } catch (err) {
+            console.error('fetchPDFBlob error:', err);
+            setText(`Fetch error: ${err.message}`);
+            throw err; // rethrow so viewFile can also catch it
+        }
     }
 
-    function downloadPDF() {
-        fetch(`${import.meta.env.VITE_API_ENDPOINT}${fileApi.file.getTemplate}`, {
-            method: 'POST', // Use POST to send data
-            headers: {
-                'Content-Type': 'application/json', // Specify JSON content type
-            },
-            body: JSON.stringify(globalContractMap), // Convert the payload to a JSON string
-        })
-            .then((res) => res.blob())
-            .then((blob) => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'draft.pdf'; // sets download filename
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch((err) => {
-                alert('Download failed: ' + err.message);
-            });
+    async function viewFile() {
+        const blob = await fetchPDFBlob();
+        setUrl(URL.createObjectURL(blob));
+        const url = URL.createObjectURL(blob);
+        const newTab = window.open(url, '_blank');
+    }
+
+    async function downloadPDF() {
+        const blob = await fetchPDFBlob();
+        console.log('downloadPDF called', blob);
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'draft.pdf'; // Set the filename
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
     }
 
     return (
