@@ -1,5 +1,6 @@
 import { Checkbox, Input, Radio } from 'antd';
 import { useGlobalMap } from '../../../hooks/GlobalMap';
+import { useIsPhoneSize } from '../../../hooks/useIsPhoneSize';
 
 const L1BottomMargin = '30px';
 const L2BottomMargin = '20px';
@@ -123,7 +124,12 @@ function Building(props) {
                 <div style={{ fontSize: '14px', marginBottom: L3BottomMargin }}>Exterior Door</div>
                 <Radio.Group defaultValue={building[curPath]} style={{ display: 'flex' }}>
                     <div
-                        style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexFlow: 'wrap',
+                        }}
                     >
                         <Item curPath={curPath} text={'Fiber-glass exterior door'} />
                         <Item curPath={curPath} text={'Solid wood exterior door'} />
@@ -149,7 +155,12 @@ function Building(props) {
                 </div>
                 <Radio.Group defaultValue={building[curPath]} style={{ display: 'flex' }}>
                     <div
-                        style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexFlow: 'wrap',
+                        }}
                     >
                         <Item curPath={curPath} text={'Vinyl-framed windows, black'} />
                         <Radio
@@ -294,7 +305,10 @@ function Kitchen(props) {
                 Cabinet
             </div>
 
-            <Radio.Group defaultValue={kitchen.cabinet} style={{ display: 'flex', width: '100%' }}>
+            <Radio.Group
+                defaultValue={kitchen.cabinet}
+                style={{ display: 'flex', width: '100%', whiteSpace: 'nowrap' }}
+            >
                 <Radio
                     value="European Shaker-style Cabinet"
                     style={{ flex: 1, textAlign: 'center', margin: 0 }}
@@ -428,6 +442,7 @@ function Kitchen(props) {
 }
 
 function Bathroom(props) {
+    const isPhone = useIsPhoneSize();
     const { bathroom, basePath } = props;
     const { pushGlobalContractMapValue, removeGlobalContractMapItem } = useGlobalMap();
 
@@ -476,8 +491,9 @@ function Bathroom(props) {
             <div
                 style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: !isPhone ? 'row' : 'column',
                     justifyContent: 'space-between',
+                    whiteSpace: !isPhone ? '' : 'nowrap',
                 }}
             >
                 <div style={{ width: '50%' }}>
@@ -535,8 +551,9 @@ function Bathroom(props) {
             <div
                 style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: !isPhone ? 'row' : 'column',
                     justifyContent: 'space-between',
+                    whiteSpace: !isPhone ? '' : 'nowrap',
                 }}
             >
                 <div style={{ width: '50%' }}>
@@ -587,6 +604,7 @@ function Bathroom(props) {
 }
 
 export function OptionalUpgrades() {
+    const isPhone = useIsPhoneSize();
     const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
     const optionalUpgrades = globalContractMap.optionalUpgrades;
     const contractMapBasePath = ['optionalUpgrades'];
@@ -602,7 +620,7 @@ export function OptionalUpgrades() {
                 // marginBottom: '100px',
             }}
         >
-            <div style={{ width: '500px' }}>
+            <div style={{ width: !isPhone ? '500px' : window.innerWidth - 20 }}>
                 <div style={{ fontSize: '30px', margin: '0px 0 30px 0' }}>Optional Upgrades</div>
                 <div style={{ fontSize: '17px', marginBottom: L1BottomMargin }}>
                     Optional Upgrades
@@ -628,9 +646,11 @@ export function OptionalUpgrades() {
                 />
 
                 <div
-                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px' }}
+                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}
                 >
-                    <div style={{ fontSize: '20px' }}>Optional Upgrades Total Cost</div>
+                    <div style={{ fontSize: !isPhone ? '20px' : '17px' }}>
+                        Optional Upgrades Total Cost
+                    </div>
                     <div style={{ width: '150px' }}>
                         <Input placeholder={'$20,000'} />
                     </div>

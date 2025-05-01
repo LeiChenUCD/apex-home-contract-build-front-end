@@ -8,12 +8,14 @@ import {
     formatUSD,
 } from '../../../utils/numberUtils';
 import { useGlobalMap } from '../../../hooks/GlobalMap';
+import { useIsPhoneSize } from '../../../hooks/useIsPhoneSize';
 
 const sectionWidth = 500;
 const subSectionLeftMargin = 20;
 
 function OptionalServiceItem(props) {
     const { setGlobalContractMapValue } = useGlobalMap();
+    const isPhone = useIsPhoneSize();
     const { text, subMap, basePath } = props;
 
     return (
@@ -21,7 +23,9 @@ function OptionalServiceItem(props) {
             <div
                 style={{
                     display: 'flex',
-                    width: `${sectionWidth - subSectionLeftMargin}px`,
+                    width: !isPhone
+                        ? `${sectionWidth - subSectionLeftMargin}px`
+                        : window.innerWidth - 60,
                     justifyContent: 'space-between',
                     alignItems: 'center',
                 }}
@@ -33,11 +37,11 @@ function OptionalServiceItem(props) {
                         onChange={(e) =>
                             setGlobalContractMapValue([...basePath, 'included'], e.target.checked)
                         }
-                        style={{ alignItems: 'center', marginRight: '20px' }}
+                        style={{ alignItems: 'center', marginRight: !isPhone ? '20px' : '' }}
                     >
                         Included
                     </Checkbox>
-                    <div style={{ width: '130px' }}>
+                    <div style={{ width: !isPhone ? '130px' : '120px' }}>
                         <Input
                             value={subMap?.price ? formatUSD(subMap.price) : null}
                             onInput={(e) => {
@@ -106,6 +110,7 @@ function SubSectionTitle(props) {
 // ------------------Site-----------------
 
 function TreeRemoval(props) {
+    const isPhone = useIsPhoneSize();
     const { treeRemoval, basePath } = props;
     return (
         <>
@@ -117,7 +122,9 @@ function TreeRemoval(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -147,6 +154,7 @@ function TreeRemoval(props) {
 }
 
 function Demolition(props) {
+    const isPhone = useIsPhoneSize();
     const { demolition, basePath } = props;
     return (
         <>
@@ -158,7 +166,9 @@ function Demolition(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -178,6 +188,7 @@ function Demolition(props) {
 }
 
 function Survey(props) {
+    const isPhone = useIsPhoneSize();
     const { survey, basePath } = props;
     return (
         <>
@@ -188,7 +199,9 @@ function Survey(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -220,6 +233,7 @@ function Site(props) {
 // ------------------Structure-----------------
 
 function BuildingSafety(props) {
+    const isPhone = useIsPhoneSize();
     const { buildingSafety, basePath } = props;
     return (
         <>
@@ -230,7 +244,9 @@ function BuildingSafety(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -270,6 +286,7 @@ function Structure(props) {
 // ------------------MEP-----------------
 
 function FireSprinkler(props) {
+    const isPhone = useIsPhoneSize();
     const { fireSprinkler, basePath } = props;
     return (
         <>
@@ -280,7 +297,9 @@ function FireSprinkler(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -305,6 +324,7 @@ function FireSprinkler(props) {
 }
 
 function ElectricalPanelUpgrade(props) {
+    const isPhone = useIsPhoneSize();
     const { electricalPanelUpgrade, basePath } = props;
     return (
         <>
@@ -315,7 +335,9 @@ function ElectricalPanelUpgrade(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -335,6 +357,7 @@ function ElectricalPanelUpgrade(props) {
 }
 
 function Utility(props) {
+    const isPhone = useIsPhoneSize();
     const { utility, basePath } = props;
     return (
         <>
@@ -345,7 +368,9 @@ function Utility(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -382,6 +407,7 @@ function MEP(props) {
 // ------------------Others-----------------
 
 function ImpactFee(props) {
+    const isPhone = useIsPhoneSize();
     const { impactFee, basePath } = props;
     return (
         <>
@@ -392,7 +418,9 @@ function ImpactFee(props) {
                         display: 'flex',
                         flexDirection: 'column',
                         paddingLeft: `${subSectionLeftMargin}px`,
-                        width: `${sectionWidth + subSectionLeftMargin}px`,
+                        width: !isPhone
+                            ? `${sectionWidth + subSectionLeftMargin}px`
+                            : window.innerWidth - 30,
                     }}
                 >
                     <OptionalServiceItem
@@ -423,6 +451,7 @@ function Others(props) {
 
 export function Additional() {
     const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
+    const isPhone = useIsPhoneSize();
 
     const additional = globalContractMap.additionalCostAndServices;
     const contractMapBasePath = ['additionalCostAndServices'];
@@ -436,7 +465,7 @@ export function Additional() {
                 // marginBottom: '100px',
             }}
         >
-            <div style={{ width: `${sectionWidth}px` }}>
+            <div style={{ width: !isPhone ? `${sectionWidth}px` : '100%' }}>
                 <div style={{ fontSize: '30px', margin: '0px 0 30px 0' }}>
                     Additional Cost & Services
                 </div>
@@ -453,9 +482,11 @@ export function Additional() {
                 <Others others={additional.others} basePath={[...contractMapBasePath, 'others']} />
 
                 <div
-                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}
+                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}
                 >
-                    <div style={{ fontSize: '20px' }}>Additional Cost & Services Total</div>
+                    <div style={{ fontSize: !isPhone ? '20px' : '17px' }}>
+                        Additional Cost & Services Total
+                    </div>
                     <div style={{ width: '150px' }}>
                         <Input placeholder={'$30,000'} />
                     </div>

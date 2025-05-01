@@ -1,5 +1,6 @@
 import { Input, Select } from 'antd';
 import { useGlobalMap } from '../../../hooks/GlobalMap';
+import { useIsPhoneSize } from '../../../hooks/useIsPhoneSize';
 
 function ClientInformation(props) {
     const { setGlobalContractMapValue } = useGlobalMap();
@@ -67,6 +68,7 @@ function Salesperson(props) {
 }
 
 function ProjectInformation(props) {
+    const isPhone = useIsPhoneSize();
     const { setGlobalContractMapValue } = useGlobalMap();
     const { projectInformation, basePath } = props;
     return (
@@ -91,8 +93,8 @@ function ProjectInformation(props) {
 
             <div style={{ margin: '20px 0 10px 0' }}>ADU Model Type</div>
             <Select
-                defaultValue="lucy"
-                style={{ width: 500 }}
+                defaultValue="a"
+                style={{ width: !isPhone ? 500 : window.innerWidth - 20 }}
                 onChange={(e) => setGlobalContractMapValue([...basePath, 'ADUModelType'], e)}
                 options={[
                     { value: 'a', label: 'A' },
@@ -105,6 +107,7 @@ function ProjectInformation(props) {
 }
 
 export function StandardContent() {
+    const isPhone = useIsPhoneSize();
     const { globalContractMap, setGlobalContractMapValue } = useGlobalMap();
     // console.log(globalContractMap.standardContent);
     const standardContent = globalContractMap.standardContent;
@@ -118,7 +121,7 @@ export function StandardContent() {
                 // marginBottom: '100px',
             }}
         >
-            <div style={{ width: '500px' }}>
+            <div style={{ width: !isPhone ? '500px' : window.innerWidth - 20 }}>
                 <div style={{ fontSize: '30px', margin: '0px 0 30px 0' }}>Standard Content</div>
 
                 <ClientInformation
@@ -135,7 +138,7 @@ export function StandardContent() {
                 />
 
                 <div
-                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '50px' }}
+                    style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}
                 >
                     <div style={{ fontSize: '20px' }}>Total Price for ADU</div>
                     <Input placeholder="$150,000" style={{ width: '200px' }} />
